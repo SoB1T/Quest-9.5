@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+
+{% block content %}
+<h2>The authorized user's page {{request.user.username}}</h2>
+<div> It may contain personal information for each user </div>
+{% if is_not_author %}
+<button> <a href="upgrade/"> Become an author</a> </button>
+{% endif %}
+<button> <a href="posts">Watch the posts</a> </button>
+<button> <a href="accounts/logout/">Exit</a> </button>
+{% endblock %}             

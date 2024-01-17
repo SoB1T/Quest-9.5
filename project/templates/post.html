@@ -1,0 +1,28 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load custom_tags %}
+{% load custom_filters %}
+
+<!-- Название у  нас будет Product -->
+{% block title %}
+Post
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
+{% block content %}
+<h1>{{ post.heading|censor}}</h1>
+<h6>Rating:{{ post.raiting }}</h6>
+<h5>Author:<button> <a href="post/{{post.id}}/author/{{post.author.id}}/subscribe"> Subscribe to author: "{{ post.author.user_id.username }}"</a> </button></h5>
+<h5>Date:{{ post.date|date:'M d Y' }}</h5>
+
+<h6>Categories:
+    {% for category in post.categories.all %}
+        <button> <a href="post/{{post.id}}/category/{{category.id}}/subscribe"> Subscribe to a category: "{{ category.name }}"</a> </button>
+    {% endfor %}
+</h6>
+
+{{ post.text|censor }}
+
+
+{% endblock content %}
