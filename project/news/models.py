@@ -14,7 +14,7 @@ STATE = [
 class Author(models.Model):
     raiting = models.FloatField(default=0)
     user_id = models.OneToOneField(User, on_delete=models.CASCADE, related_name="author_profile")
-    subcribes = models.ManyToManyField(User, blank=True, null=True, related_name="author")
+    subcribes = models.ManyToManyField(User, blank=True, related_name="author")
 
     def __str__(self):
         return f"{self.user_id.username}"
@@ -78,6 +78,9 @@ class Comment(models.Model):
         self.comment_raiting -= 1
         self.save()
 
+    def __str__(self):
+        return self.text
+
 
 class InterestingPost(models.Model):
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -91,4 +94,3 @@ class InterestingPost(models.Model):
 
 class InterestingPosts(models.Model):
     news = models.ForeignKey(InterestingPost, on_delete=models.CASCADE)
-

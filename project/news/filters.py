@@ -4,7 +4,6 @@ from .models import Post
 from django import forms
 
 
-
 class PostFilter(FilterSet):
     author__user_id__username = django_filters.CharFilter(field_name='author__user_id__username',
                                                           lookup_expr='icontains')

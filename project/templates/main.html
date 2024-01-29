@@ -1,12 +1,72 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <title> Simple SignUp/SignIn app</title>
-    </head>
-    <body>
-        <div>
-            <h1><a href="/">Simple SignUp/SignIn app</a></h1>
-        </div>
-        {% block content %}
-        {% endblock %}
-    </body>
+<head>
+    <title>{% block head_title %}Simple SignUp/SignIn app{% endblock head_title %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav {
+            background-color: #eee;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            margin: 0 10px;
+        }
+
+        nav a:hover {
+            color: #555;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="/">Simple SignUp/SignIn app</a></h1>
+    </header>
+
+    <nav>
+        <!-- Здесь может быть ваше навигационное меню для SignUp/SignIn -->
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <!-- Здесь может быть информация о копирайте или другие дополнительные сведения -->
+    </footer>
+</body>
 </html>

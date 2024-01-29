@@ -6,12 +6,19 @@ from django.template.loader import render_to_string
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, TemplateView
 from django.urls import reverse_lazy
-from .models import Post, Category, Author
+from .models import Post, Category, Author, Comment
 from .filters import PostFilter
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect, get_object_or_404, render
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
+
+
+# @login_required
+# def add_comment(request, post_id, ):
+#     user = request.user
+#     post = Post.objects.get(id=post_id)
+#     text=
 
 
 @login_required
@@ -67,13 +74,21 @@ class PostDetails(DetailView):
     template_name = "post.html"
     context_object_name = "post"
 
-    @login_required
-    def upgrade_me(request):
-        user = request.user
-        premium_group = Group.objects.get(name='author')
-        if not request.user.groups.filter(name='author').exists():
-            premium_group.user_set.add(user)
-        return redirect('/')
+    # form_class = CommentForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_author_post'] = self.request.user == self.object.author.user_id
+        context['is_comments'] = not Comment.objects.filter(post_id=self.object.id).all() == 0
+        context['comments'] = Comment.objects.filter(post_id=self.object.id).all()
+        # context['comment_form'] = CommentForm(initial={'post': self.object})
+        return context
+
+    # @login_required
+    # def form_valid(self, form):
+    #     form.instance.post = self.object
+    #     form.instance.user_id = self.request.user
+    #     return super().form_valid(form)
 
 
 class PostCreate(GroupMixin, CreateView):
@@ -102,3 +117,28 @@ class PostDelete(GroupMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
+
+
+class CommentCreate(CreateView):
+    form_class = CommentForm
+    model = Comment
+    template_name = "add_comment.html"
+
+    def form_valid(self, form):
+        post_id = self.kwargs['post_id']
+        comment = form.save(commit=False)
+        comment.user_id = self.request.user # Присваиваем созданного или существующего автора
+        comment.post_id = post_id
+        comment.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = Post.objects.get(id=self.kwargs['post_id'])
+        context['is_comments'] = not Comment.objects.filter(post_id=self.kwargs['post_id']).all() == 0
+        context['comments'] = Comment.objects.filter(post_id=self.kwargs['post_id']).all()
+
+        return context
+
+    def get_success_url(self):
+        return f"http://127.0.0.1:8000/posts/{self.kwargs["post_id"]}"

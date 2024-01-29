@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly News Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #007BFF;
+        }
+
+        a {
+            color: #343A40;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .post-link {
+            margin-bottom: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h2>The Latest for the Week in Your Favorite Category: {{ category_name }}</h2>
+    {% for post in posts %}
+        <div class="post-link">
+            <a href="http://127.0.0.1:8000/posts/{{post.id}}">
+                {{ post.heading }} by {{ post.author }}
+            </a>
+        </div>
+    {% endfor %}
+</body>
+</html>

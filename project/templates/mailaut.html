@@ -7,7 +7,8 @@
 </head>
 <body>
     <h2>Knock-knock...{{ client_name }} Who's there? This is a new post from your favorite author {{ author_name }} </h2>
-    <p> {{ Heading }}</p>
-    <p> {{ Text|truncatewords:50|censor }} </p>
+    <a href="{{ link }}"> {{ heading }} by {{ author }}</a>
+    <p></p>
+    <p> {{ text|truncatewords:50 }} </p>>
 </body>
 </html>
